@@ -96,6 +96,10 @@ class MyApp extends StatelessWidget {
                         // Perform your login logic here...
                         print("Email: $email");
                         print("Password: $password");
+
+                        // Clear form fields after successful login
+                        emailController.clear();
+                        passwordController.clear();
                       }
                     },
                     child: Text(
@@ -173,8 +177,8 @@ class _PasswordFieldState extends State<PasswordField> {
             suffixIcon: Padding(
               padding: const EdgeInsets.only(right: 20.0),
               child: IconButton(
-                icon:
-                    Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
+                icon: Icon(
+                    _obscureText ? Icons.visibility : Icons.visibility_off),
                 onPressed: () {
                   setState(() {
                     _obscureText = !_obscureText;
