@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfour/dashboard/dashboard.dart';
 import 'login/forgot_password_page.dart';
 import 'login/login_page.dart';
 
@@ -12,10 +13,11 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Login Demo',
-      initialRoute: '/login',
+      initialRoute: '/dashboard',
       routes: {
         '/login': (context) => LoginPage(),
         '/forgot_password': (context) => ForgotPasswordPage(),
+        '/dashboard': (context) => DashboardPage(),
         // Add other routes for different pages (e.g., home page, etc.)
       },
     );

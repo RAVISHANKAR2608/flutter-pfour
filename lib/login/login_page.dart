@@ -22,7 +22,7 @@ class LoginPage extends StatelessWidget {
                   SizedBox(
                     height: 50,
                   ),
-                  Image(image: AssetImage('assets/images/pfour_logo.png')),
+                  Image(image: AssetImage('/assets/images/pfour_logo.png')),
                   SizedBox(
                     height: 50,
                   ),
@@ -95,6 +95,9 @@ class LoginPage extends StatelessWidget {
                         // Clear form fields after successful login
                         emailController.clear();
                         passwordController.clear();
+
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => dashboard()))
+                        Navigator.pushNamed(context, '/dashboard');
                       }
                     },
                     child: Text(
