@@ -41,30 +41,39 @@ class MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Column(
-        children: [
-          WeeklyDatePicker(
-            selectedDay: _selectedDay,
-            changeDay: (value) {
-              setState(() {
-                _selectedDay = value;
-              });
-               // Format the selected date
-              String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDay);
-              // Print the formatted date to the console
-              print('Selected Date: $formattedDate');
-            },
-            enableWeeknumberText: false,
-            weeknumberColor: const Color(0xFF57AF87),
-            weeknumberTextColor: Colors.white,
-            backgroundColor: const Color(0xFF1A1A1A),
-            weekdayTextColor: const Color(0xFF8A8A8A),
-            digitsColor: Colors.white,
-            selectedDigitBackgroundColor: const Color(0xFF57AF87),
-            weekdays: const ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
-            daysInWeek: 7,
-          ),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Color.fromARGB(255, 201, 95, 95), // background color
+                borderRadius: BorderRadius.circular(12), // border radius
+              ),
+              child: WeeklyDatePicker(
+                selectedDay: _selectedDay,
+                changeDay: (value) {
+                  setState(() {
+                    _selectedDay = value;
+                  });
+                   // Format the selected date
+                  String formattedDate = DateFormat('yyyy-MM-dd').format(_selectedDay);
+                  // Print the formatted date to the console
+                  print('Selected Date: $value');
+                },
+                enableWeeknumberText: false,
+                weeknumberColor: const Color(0xFF57AF87),
+                weeknumberTextColor: Colors.white,
+                backgroundColor: Colors.transparent, // Set background color to transparent to avoid conflict
+                weekdayTextColor: Color.fromARGB(255, 0, 0, 0),
+                digitsColor: Colors.white,
+                selectedDigitBackgroundColor: const Color(0xFF57AF87),
+                weekdays: const ["Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+                daysInWeek: 7,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
