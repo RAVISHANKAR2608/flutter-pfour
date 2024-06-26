@@ -30,6 +30,9 @@ class HorizontalTimeline extends StatefulWidget {
 class _HorizontalTimelineState extends State<HorizontalTimeline> {
   int? selectedIndex;
 
+  // List of booked slots
+  final List<String> bookedSlots = ['2:00 PM', '3:00 PM'];
+
   List<String> generateTimeSlots() {
     List<String> timeSlots = [];
     int startHour = 10; // 10:00 AM
@@ -71,6 +74,7 @@ class _HorizontalTimelineState extends State<HorizontalTimeline> {
                   child: TimeSlot(
                     time: timeSlots[index],
                     selected: selectedIndex == index,
+                    booked: bookedSlots.contains(timeSlots[index]),
                     onTap: () {
                       setState(() {
                         selectedIndex = index;
