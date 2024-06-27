@@ -54,40 +54,47 @@ class _HorizontalTimelineState extends State<HorizontalTimeline> {
         title: const Text('Horizontal Timeline'),
       ),
       body: Center(
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.center,
-                child: Container(
-                  height: 2,
-                  color: Colors.grey,
-                ),
+            Container(
+              height: 2,
+              margin: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Row(
+                children: timeSlots.map((time) {
+                  return Expanded(
+                    child: Container(
+                      color: bookedSlots.contains(time) ? Colors.red : Colors.green,
+                    ),
+                  );
+                }).toList(),
               ),
             ),
-            ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: timeSlots.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: TimeSlot(
-                    time: timeSlots[index],
-                    selected: selectedIndex == index,
-                    booked: bookedSlots.contains(timeSlots[index]),
-                    onTap: () {
-                      setState(() {
-                        selectedIndex = index;
-                      });
-                    },
-                  ),
-                );
-              },
+            SizedBox(
+              height: 80,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: timeSlots.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: TimeSlot(
+                      time: timeSlots[index],
+                      selected: selectedIndex == index,
+                      booked: bookedSlots.contains(timeSlots[index]),
+                      onTap: () {
+                        setState(() {
+                          selectedIndex = index;
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
             ),
             if (selectedIndex != null)
-              Positioned(
-                bottom: 16.0,
-                left: MediaQuery.of(context).size.width / 2 - 75,
+              Padding(
+                padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'Selected Time: ${timeSlots[selectedIndex!]}',
                   style: const TextStyle(fontSize: 18),

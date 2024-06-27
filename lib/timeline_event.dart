@@ -20,12 +20,12 @@ class TimeSlot extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SizedBox(height: 50.0),
           Container(
             height: 20,
             width: 2,
-            color: booked ? Colors.red : Colors.green,
+            color: selected ? Colors.blue : Colors.grey,
           ),
+          const SizedBox(height: 8.0),
           Text(
             time,
             style: TextStyle(
