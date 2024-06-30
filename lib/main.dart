@@ -80,7 +80,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                         ),
                       ),
                       const SizedBox(
-                          height: 16), // Space between lines and time texts
+                          height: 20), // Space between lines and time texts
                       if (intervalTime.minute == 0 ||
                           (intervalTime.hour == 22 &&
                               intervalTime.minute ==
@@ -157,13 +157,13 @@ class IntervalPainter extends CustomPainter {
     if (intervalTime.minute == 0) {
       paint.color = Colors.black;
       paint.strokeWidth = 2;
-      canvas.drawLine(Offset(size.width / 2, size.height / 2),
-          Offset(size.width / 2, 40), paint);
+      canvas.drawLine(Offset(size.width / 2, size.height / 2 + 10),
+          Offset(size.width / 2, 45), paint);
     } else if (intervalTime.minute == 30) {
       paint.color = Colors.black;
       paint.strokeWidth = 2;
-      canvas.drawLine(Offset(size.width / 2, size.height / 2),
-          Offset(size.width / 2, 30), paint);
+      canvas.drawLine(Offset(size.width / 2, size.height / 2 + 10),
+          Offset(size.width / 2, 35), paint);
     }
   }
 
