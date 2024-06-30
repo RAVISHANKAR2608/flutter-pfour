@@ -16,7 +16,7 @@ class TimelineWidget extends StatefulWidget {
 
 class _TimelineWidgetState extends State<TimelineWidget> {
   late ScrollController _scrollController;
-  final double intervalWidth = 15;
+  final double intervalWidth = 20;
   final double timelineMargin = 20;
 
   @override
@@ -24,7 +24,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     super.initState();
     _scrollController = ScrollController();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
       _centerCurrentTime();
     });
   }
@@ -43,30 +43,44 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(horizontal: timelineMargin),
+      margin: EdgeInsets.symmetric(horizontal: timelineMargin),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.arrow_downward),
           const SizedBox(height: 10),
-          SizedBox(
-            height: 80, // Increased height to provide enough vertical space
+          Container(
+            height: 100,
             child: ListView.builder(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: 145, // 12 hours * 12 intervals per hour (5 minutes each) + 1 extra for 10 PM
+              itemCount: 12, // Only show intervals from 10 AM to 10 PM
               itemBuilder: (context, index) {
+                // Calculate hour and minute for the current interval
+                int hour = index + 10; // Start from 10 AM
+                int minute = 0;
+                if (index > 0) {
+                  minute = (index % 12) * 5; // 5-minute intervals
+                }
+
+                // Create DateTime for the current interval
                 DateTime intervalTime = DateTime(
                   widget.currentTime.year,
                   widget.currentTime.month,
                   widget.currentTime.day,
-                  10,
-                  0,
-                ).add(Duration(minutes: 5 * index));
+                  hour,
+                  minute,
+                );
+
+                // Adjust width for 0 minutes
+                double width = intervalTime.minute == 0
+                    ? intervalWidth + 4
+                    : intervalWidth;
+
                 return Container(
-                  width: intervalWidth,
+                  width: width,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomPaint(
                         painter: IntervalPainter(
@@ -75,23 +89,18 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                           bookedTimes: widget.bookedTimes,
                         ),
                         child: Container(
-                          height: 30, // Height of the interval line container
+                          height: 50, // Height of the interval line container
                         ),
                       ),
-                      const SizedBox(height: 8), // Space between lines and time texts
-                      if (intervalTime.minute == 0 || (intervalTime.hour == 22 && intervalTime.minute == 0)) // Add condition to show 10 PM
-                        Column(
-                          children: [
-                            Text(
-                              DateFormat('h').format(intervalTime), // Show hour in 12-hour format
-                              style: const TextStyle(fontSize: 8),
-                            ),
-                            Text(
-                              DateFormat('a').format(intervalTime), // Show AM/PM
-                              style: const TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: 4), // Space between time lines
+                      Text(
+                        DateFormat('h').format(intervalTime),
+                        style: const TextStyle(fontSize: 12),
+                      ),
+                      Text(
+                        DateFormat('a').format(intervalTime),
+                        style: const TextStyle(fontSize: 12),
+                      ),
                     ],
                   ),
                 );
@@ -123,7 +132,7 @@ class IntervalPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..strokeWidth = 2;
+    final paint = Paint()..strokeWidth = 4;
 
     // Set color based on the interval time
     if (intervalTime.isBefore(currentTime)) {
@@ -139,10 +148,12 @@ class IntervalPainter extends CustomPainter {
     canvas.drawLine(
         Offset(0, size.height / 2), Offset(size.width, size.height / 2), paint);
 
-    // Draw dots at the start of each hour and at 10:00 PM
-    if (intervalTime.minute == 0 || (intervalTime.hour == 22 && intervalTime.minute == 0)) {
+    // Draw dots at the start (10:00 AM) and end (10:00 PM)
+    if ((intervalTime.hour == 10 && intervalTime.minute == 0) ||
+        (intervalTime.hour == 22 && intervalTime.minute == 0)) {
       paint.style = PaintingStyle.fill;
-      canvas.drawCircle(Offset(size.width / 2, size.height / 2), 4, paint);
+      canvas.drawCircle(Offset(0, size.height / 2), 4, paint);
+      canvas.drawCircle(Offset(size.width, size.height / 2), 4, paint);
     }
 
     // Draw the small lines at the bottom for each hour
@@ -182,9 +193,9 @@ void main() {
           bookedTimes: [
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 19, 45),
+                  DateTime.now().day, 16, 0),
               DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 21, 0),
+                  DateTime.now().day, 17, 0),
             ), // Example booked interval
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
