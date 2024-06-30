@@ -76,15 +76,15 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                           bookedTimes: widget.bookedTimes,
                         ),
                         child: Container(
-                          height: 30, // Height of the interval line container
+                          height: 30,
                         ),
                       ),
                       const SizedBox(
-                          height: 20), // Space between lines and time texts
+                          height: 20),
                       if (intervalTime.minute == 0 ||
                           (intervalTime.hour == 22 &&
                               intervalTime.minute ==
-                                  0)) // Add condition to show 10 PM
+                                  0))
                         Column(
                           children: [
                             Text(
