@@ -54,7 +54,8 @@ class _TimelineWidgetState extends State<TimelineWidget> {
             child: ListView.builder(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: 145, // 12 hours * 12 intervals per hour (5 minutes each) + 1 extra for 10 PM
+              itemCount:
+                  145, // 12 hours * 12 intervals per hour (5 minutes each) + 1 extra for 10 PM
               itemBuilder: (context, index) {
                 DateTime intervalTime = DateTime(
                   widget.currentTime.year,
@@ -78,16 +79,22 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                           height: 30, // Height of the interval line container
                         ),
                       ),
-                      const SizedBox(height: 8), // Space between lines and time texts
-                      if (intervalTime.minute == 0 || (intervalTime.hour == 22 && intervalTime.minute == 0)) // Add condition to show 10 PM
+                      const SizedBox(
+                          height: 16), // Space between lines and time texts
+                      if (intervalTime.minute == 0 ||
+                          (intervalTime.hour == 22 &&
+                              intervalTime.minute ==
+                                  0)) // Add condition to show 10 PM
                         Column(
                           children: [
                             Text(
-                              DateFormat('h').format(intervalTime), // Show hour in 12-hour format
+                              DateFormat('h').format(
+                                  intervalTime), // Show hour in 12-hour format
                               style: const TextStyle(fontSize: 8),
                             ),
                             Text(
-                              DateFormat('a').format(intervalTime), // Show AM/PM
+                              DateFormat('a')
+                                  .format(intervalTime), // Show AM/PM
                               style: const TextStyle(fontSize: 8),
                             ),
                           ],
@@ -128,8 +135,8 @@ class IntervalPainter extends CustomPainter {
     // Set color based on the interval time
     if (intervalTime.isBefore(currentTime)) {
       paint.color = Colors.purple; // Past time interval color
-    } else if (bookedTimes.any((range) =>
-        range.overlaps(intervalTime, intervalTime.add(const Duration(minutes: 5))))) {
+    } else if (bookedTimes.any((range) => range.overlaps(
+        intervalTime, intervalTime.add(const Duration(minutes: 5))))) {
       paint.color = Colors.red; // Booked time interval color
     } else {
       paint.color = Colors.green; // Available time interval color
@@ -140,7 +147,8 @@ class IntervalPainter extends CustomPainter {
         Offset(0, size.height / 2), Offset(size.width, size.height / 2), paint);
 
     // Draw dots at the start of each hour and at 10:00 PM
-    if (intervalTime.minute == 0 || (intervalTime.hour == 22 && intervalTime.minute == 0)) {
+    if (intervalTime.minute == 0 ||
+        (intervalTime.hour == 22 && intervalTime.minute == 0)) {
       paint.style = PaintingStyle.fill;
       canvas.drawCircle(Offset(size.width / 2, size.height / 2), 4, paint);
     }
@@ -150,7 +158,12 @@ class IntervalPainter extends CustomPainter {
       paint.color = Colors.black;
       paint.strokeWidth = 2;
       canvas.drawLine(Offset(size.width / 2, size.height / 2),
-          Offset(size.width / 2, size.height), paint);
+          Offset(size.width / 2, 40), paint);
+    } else if (intervalTime.minute == 30) {
+      paint.color = Colors.black;
+      paint.strokeWidth = 2;
+      canvas.drawLine(Offset(size.width / 2, size.height / 2),
+          Offset(size.width / 2, 30), paint);
     }
   }
 
