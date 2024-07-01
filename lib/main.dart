@@ -45,7 +45,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     return Container(
       // margin: EdgeInsets.symmetric(horizontal: timelineMargin),
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Icon(Icons.arrow_downward),
           const SizedBox(height: 10),
@@ -130,7 +130,7 @@ class IntervalPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final paint = Paint()..strokeWidth = 2;
+    final paint = Paint()..strokeWidth = 4;
 
     // Set color based on the interval time
     if (intervalTime.isBefore(currentTime)) {
@@ -156,7 +156,7 @@ class IntervalPainter extends CustomPainter {
     // Draw the small lines at the bottom for each hour
     if (intervalTime.minute == 0) {
       paint.color = Colors.black;
-      paint.strokeWidth = 2;
+      paint.strokeWidth = 3;
       canvas.drawLine(Offset(size.width / 2, size.height / 2 + 10),
           Offset(size.width / 2, 45), paint);
     } else if (intervalTime.minute == 30) {
