@@ -50,7 +50,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
           const Icon(Icons.arrow_downward),
           const SizedBox(height: 10),
           SizedBox(
-            height: 80, // Increased height to provide enough vertical space
+            height: 80,
             child: ListView.builder(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
