@@ -112,7 +112,8 @@ class LocationBottomSheet extends StatelessWidget {
   final String selectedLocation;
   final Function(String) onLocationSelected;
 
-  LocationBottomSheet({required this.selectedLocation, required this.onLocationSelected});
+  LocationBottomSheet(
+      {required this.selectedLocation, required this.onLocationSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -121,7 +122,7 @@ class LocationBottomSheet extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-         const Padding(
+          const Padding(
             padding: EdgeInsets.all(16),
             child: Text(
               'Available Locations',
@@ -139,10 +140,13 @@ class LocationBottomSheet extends StatelessWidget {
                     onLocationSelected(locations[index]);
                   },
                   child: Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     shape: RoundedRectangleBorder(
                       side: BorderSide(
-                        color: isSelected ? Colors.blue : Colors.grey, // Change border color if selected
+                        color: isSelected
+                            ? Colors.blue
+                            : Colors.grey, // Change border color if selected
                         width: 2,
                       ),
                       borderRadius: BorderRadius.circular(10),
@@ -153,13 +157,15 @@ class LocationBottomSheet extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                                                SizedBox(height: 8,),
-
+                          const SizedBox(
+                            height: 8,
+                          ),
                           Expanded(
                             child: Image.network(
                               images[index],
                               fit: BoxFit.cover,
-                              errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
                                 return const Icon(Icons.error, size: 100);
                               },
                             ),
@@ -183,3 +189,58 @@ class LocationBottomSheet extends StatelessWidget {
     );
   }
 }
+
+
+
+
+// Bottom Modal Sheet with Card Design
+
+
+//   void _showShopSelectionSheet() {
+//   showModalBottomSheet(
+//     context: context,
+//     builder: (context) {
+//       return Container(
+//         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+//         child: ListView.builder(
+//           itemCount: _shops?.length ?? 0,
+//           itemBuilder: (context, index) {
+//             final shop = _shops![index];
+//             final isSelected = shop['id'] == _selectedShopId;
+
+//             return GestureDetector(
+//               onTap: () {
+//                 setState(() {
+//                   _selectedShopId = shop['id'];
+//                   _selectedShopName = shop['name'];
+//                   _selectedShopLocation = shop['location'];
+//                 });
+
+//                 print("Selected Shop ID : $_selectedShopId");
+//                 print("Selected Shop Name : $_selectedShopName");
+//                 print("Selected Shop Location : $_selectedShopLocation");
+//                 Navigator.pop(context);
+//               },
+//               child: Card(
+//                 margin: const EdgeInsets.symmetric(vertical: 8),
+//                 elevation: isSelected ? 4 : 0,
+//                 shape: RoundedRectangleBorder(
+//                   borderRadius: BorderRadius.circular(10),
+//                   side: BorderSide(
+//                     color: isSelected ? Colors.blue : Colors.transparent,
+//                     width: 2,
+//                   ),
+//                 ),
+//                 child: ListTile(
+//                   title: Text(shop['name']),
+//                   subtitle: Text(shop['location']),
+//                   trailing: isSelected ? const Icon(Icons.check) : null,
+//                 ),
+//               ),
+//             );
+//           },
+//         ),
+//       );
+//     },
+//   );
+// }
