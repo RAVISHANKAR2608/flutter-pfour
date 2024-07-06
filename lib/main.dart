@@ -6,9 +6,10 @@ class TimelineWidget extends StatefulWidget {
   final List<TimeRange> bookedTimes;
 
   const TimelineWidget({
+    Key? key,
     required this.currentTime,
     required this.bookedTimes,
-  });
+  }) : super(key: key);
 
   @override
   _TimelineWidgetState createState() => _TimelineWidgetState();
@@ -79,12 +80,9 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                           height: 30,
                         ),
                       ),
-                      const SizedBox(
-                          height: 20),
+                      const SizedBox(height: 20),
                       if (intervalTime.minute == 0 ||
-                          (intervalTime.hour == 22 &&
-                              intervalTime.minute ==
-                                  0))
+                          (intervalTime.hour == 22 && intervalTime.minute == 0))
                         Column(
                           children: [
                             Text(
@@ -146,24 +144,15 @@ class IntervalPainter extends CustomPainter {
     canvas.drawLine(
         Offset(0, size.height / 2), Offset(size.width, size.height / 2), paint);
 
-    // Draw dots at the start of each hour and at 10:00 PM
-    if (intervalTime.minute == 0 ||
-        (intervalTime.hour == 22 && intervalTime.minute == 0)) {
-      paint.style = PaintingStyle.fill;
-      canvas.drawCircle(Offset(size.width / 2, size.height / 2), 4, paint);
-    }
-
     // Draw the small lines at the bottom for each hour
     if (intervalTime.minute == 0) {
       paint.color = Colors.black;
       paint.strokeWidth = 3;
-      canvas.drawLine(Offset(size.width / 2, size.height / 2 + 10),
-          Offset(size.width / 2, 45), paint);
+      canvas.drawLine(Offset(0, size.height / 2 + 10), Offset(0, 45), paint);
     } else if (intervalTime.minute == 30) {
       paint.color = Colors.black;
       paint.strokeWidth = 2;
-      canvas.drawLine(Offset(size.width / 2, size.height / 2 + 10),
-          Offset(size.width / 2, 35), paint);
+      canvas.drawLine(Offset(0, size.height / 2 + 10), Offset(0, 35), paint);
     }
   }
 
