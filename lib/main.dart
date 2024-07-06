@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'dart:ui' as ui;
 
 class TimelineWidget extends StatefulWidget {
   final DateTime currentTime;
@@ -51,7 +52,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
           const Icon(Icons.arrow_downward),
           const SizedBox(height: 10),
           SizedBox(
-            height: 80,
+            height: 120,
             child: ListView.builder(
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
@@ -80,23 +81,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                           height: 30,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      if (intervalTime.minute == 0 ||
-                          (intervalTime.hour == 22 && intervalTime.minute == 0))
-                        Column(
-                          children: [
-                            Text(
-                              DateFormat('h').format(
-                                  intervalTime), // Show hour in 12-hour format
-                              style: const TextStyle(fontSize: 8),
-                            ),
-                            Text(
-                              DateFormat('a')
-                                  .format(intervalTime), // Show AM/PM
-                              style: const TextStyle(fontSize: 8),
-                            ),
-                          ],
-                        ),
+                      const SizedBox(height: 10),
                     ],
                   ),
                 );
@@ -148,11 +133,67 @@ class IntervalPainter extends CustomPainter {
     if (intervalTime.minute == 0) {
       paint.color = Colors.black;
       paint.strokeWidth = 3;
-      canvas.drawLine(Offset(0, size.height / 2 + 10), Offset(0, 45), paint);
+      canvas.drawLine(
+          Offset(0, size.height / 2 + 10), const Offset(0, 55), paint);
     } else if (intervalTime.minute == 30) {
       paint.color = Colors.black;
       paint.strokeWidth = 2;
-      canvas.drawLine(Offset(0, size.height / 2 + 10), Offset(0, 35), paint);
+      canvas.drawLine(
+          Offset(0, size.height / 2 + 10), const Offset(0, 45), paint);
+    } else if (intervalTime.minute == 15 || intervalTime.minute == 45) {
+      paint.color = Colors.black;
+      paint.strokeWidth = 2;
+      canvas.drawLine(
+          Offset(0, size.height / 2 + 10), const Offset(0, 35), paint);
+    } else if (intervalTime.minute == 5 ||
+        intervalTime.minute == 10 ||
+        intervalTime.minute == 20 ||
+        intervalTime.minute == 25 ||
+        intervalTime.minute == 35 ||
+        intervalTime.minute == 40 ||
+        intervalTime.minute == 50 ||
+        intervalTime.minute == 55) {
+      paint.color = Colors.black;
+      paint.strokeWidth = 2;
+      canvas.drawLine(Offset(0, size.height / 2 + 10), const Offset(0, 30), paint);
+    }
+
+    // Draw the hour text
+    if (intervalTime.minute == 0) {
+      String timeText = DateFormat('hh:mm').format(intervalTime);
+      String hour = DateFormat('h').format(intervalTime);
+      String period = DateFormat('a').format(intervalTime);
+
+      TextSpan span = TextSpan(
+        children: [
+          TextSpan(
+            text: timeText,
+            style: const TextStyle(
+                color: Colors.black,
+                fontSize: 12.0,
+                fontWeight: FontWeight.w800),
+          ),
+          TextSpan(
+            text: "\n$period",
+            style: const TextStyle(color: Colors.black, fontSize: 12.0),
+          ),
+        ],
+      );
+
+      TextPainter tp = TextPainter(
+        text: span,
+        textAlign: TextAlign.center,
+        textDirection: ui.TextDirection.ltr,
+      );
+      tp.layout();
+
+      // Calculate the position
+      double xPos =
+          -tp.width / 2; // Center horizontally below the vertical line
+      double yPos =
+          size.height / 2 + 50; // Adjust the vertical position as needed
+
+      tp.paint(canvas, Offset(xPos, yPos));
     }
   }
 
