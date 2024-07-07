@@ -35,10 +35,13 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   int currentHour = widget.currentTime.hour - 10; // Start from 10 AM
   int currentMinute = widget.currentTime.minute;
   int currentInterval = currentHour * 12 + (currentMinute / 5).round();
+  // double targetPosition = currentInterval * intervalWidth +
+  //     paddingWidth -
+  //     MediaQuery.of(context).size.width / 2;
   double targetPosition = currentInterval * intervalWidth +
       paddingWidth -
-      MediaQuery.of(context).size.width / 2 +
-      intervalWidth / 2;
+      MediaQuery.of(context).size.width / 2 -
+      intervalWidth;
 
   // Ensure we do not scroll to a negative position
   if (targetPosition < 0) {
