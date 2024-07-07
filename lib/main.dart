@@ -19,7 +19,7 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   late ScrollController _scrollController;
   final double intervalWidth = 15;
-  final double paddingWidth = 100; // Adjust the padding width as needed
+  final double paddingWidth = 200; // Adjust the padding width as needed
 
   @override
   void initState() {
@@ -32,21 +32,28 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   }
 
   void _centerCurrentTime() {
-    int currentHour = widget.currentTime.hour - 10; // Start from 10 AM
-    int currentMinute = widget.currentTime.minute;
-    int currentInterval = currentHour * 12 + (currentMinute / 5).round();
-    double targetPosition = currentInterval * intervalWidth -
-        MediaQuery.of(context).size.width / 2 +
-        intervalWidth / 2 +
-        paddingWidth; // Add padding width
+  int currentHour = widget.currentTime.hour - 10; // Start from 10 AM
+  int currentMinute = widget.currentTime.minute;
+  int currentInterval = currentHour * 12 + (currentMinute / 5).round();
+  double targetPosition = currentInterval * intervalWidth +
+      paddingWidth -
+      MediaQuery.of(context).size.width / 2 +
+      intervalWidth / 2;
 
-    // Ensure we do not scroll to a negative position
-    if (targetPosition < 0) {
-      targetPosition = 0;
-    }
-
-    _scrollController.jumpTo(targetPosition);
+  // Ensure we do not scroll to a negative position
+  if (targetPosition < 0) {
+    targetPosition = 0;
   }
+
+  // Ensure we do not scroll beyond the maximum position
+  double maxPosition = (144 * intervalWidth) + (2 * paddingWidth) - MediaQuery.of(context).size.width;
+  if (targetPosition > maxPosition) {
+    targetPosition = maxPosition;
+  }
+
+  _scrollController.jumpTo(targetPosition);
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +70,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               itemCount:
-                  145 + 2, // 12 hours * 12 intervals per hour (5 minutes each) + 2 for padding
+                  145 + 2,// 12 hours * 12 intervals per hour (5 minutes each) + 2 for padding
               itemBuilder: (context, index) {
                 if (index == 0 || index == 146) {
                   // Add padding at the start and end
@@ -232,7 +239,9 @@ void main() {
       ),
       body: Center(
         child: TimelineWidget(
-          currentTime: DateTime.now(),
+          // currentTime: DateTime.now(),
+          currentTime: DateTime(DateTime.now().year, DateTime.now().month,
+                  DateTime.now().day, 10, 30),
           bookedTimes: [
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
