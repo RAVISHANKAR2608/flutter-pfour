@@ -241,7 +241,7 @@ void main() {
         child: TimelineWidget(
           // currentTime: DateTime.now(),
           currentTime: DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 10, 30),
+                  DateTime.now().day, 10, 0),
           bookedTimes: [
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
