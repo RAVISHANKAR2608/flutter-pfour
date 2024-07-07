@@ -19,7 +19,7 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   late ScrollController _scrollController;
   final double intervalWidth = 15;
-  final double timelineMargin = 20;
+  final double paddingWidth = 100; // Adjust the padding width as needed
 
   @override
   void initState() {
@@ -37,7 +37,13 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     int currentInterval = currentHour * 12 + (currentMinute / 5).round();
     double targetPosition = currentInterval * intervalWidth -
         MediaQuery.of(context).size.width / 2 +
-        intervalWidth / 2;
+        intervalWidth / 2 +
+        paddingWidth; // Add padding width
+
+    // Ensure we do not scroll to a negative position
+    if (targetPosition < 0) {
+      targetPosition = 0;
+    }
 
     _scrollController.jumpTo(targetPosition);
   }
@@ -57,15 +63,20 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               controller: _scrollController,
               scrollDirection: Axis.horizontal,
               itemCount:
-                  145, // 12 hours * 12 intervals per hour (5 minutes each) + 1 extra for 10 PM
+                  145 + 2, // 12 hours * 12 intervals per hour (5 minutes each) + 2 for padding
               itemBuilder: (context, index) {
+                if (index == 0 || index == 146) {
+                  // Add padding at the start and end
+                  return SizedBox(width: paddingWidth);
+                }
+
                 DateTime intervalTime = DateTime(
                   widget.currentTime.year,
                   widget.currentTime.month,
                   widget.currentTime.day,
                   10,
                   0,
-                ).add(Duration(minutes: 5 * index));
+                ).add(Duration(minutes: 5 * (index - 1)));
                 return Container(
                   width: intervalWidth,
                   child: Column(
@@ -225,15 +236,15 @@ void main() {
           bookedTimes: [
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 19, 45),
-              DateTime(DateTime.now().year, DateTime.now().month,
                   DateTime.now().day, 21, 0),
+              DateTime(DateTime.now().year, DateTime.now().month,
+                  DateTime.now().day, 22, 0),
             ), // Example booked interval
             TimeRange(
               DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 18, 15),
+                  DateTime.now().day, 19, 0),
               DateTime(DateTime.now().year, DateTime.now().month,
-                  DateTime.now().day, 19, 15),
+                  DateTime.now().day, 20, 0),
             ), // Example booked interval
           ],
         ),
